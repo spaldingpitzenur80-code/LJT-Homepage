@@ -22,7 +22,22 @@ jobs:
         run: bundle exec jekyll build --baseurl "/LJT-Homepage" --strict_front_matter
         env:
           JEKYLL_ENV: production
-      - name: Inspect built site
+      - name: Verify homepage content
         run: |
-          find _site -maxdepth 2 -type d | sort
-          head -c 1200 _site/index.html
+          echo "--- files built ---"
+          find _site -name "index.html" | sort
+          echo "--- homepage sections ---"
+          grep -o "Research Interests\|Education\|Research Experience\|Skills\|Publications\|Contact" _site/index.html | sort | uniq -c
+          echo "--- homepage publications ---"
+          grep -o "SynLogic[^<]*\|On the Perception Bottleneck[^<]*\|On the Universal Truthfulness Hyperplane[^<]*\|In-Context Sharpness[^<]*\|C-Eval[^<]*\|Composing Parameter-Efficient Modules[^<]*" _site/index.html | sort -u
+          echo "--- author sidebar ---"
+          grep -o "jliugi@connect.ust.hk\|Vicent0205\|HKUST NLP Group" _site/index.html | sort | uniq -c
+          echo "--- publications page ---"
+          grep -o "Published in[^<]*</i>[^,]*, 20[0-9][0-9]" _site/publications/index.html | sort -u
+          echo "--- cv page ---"
+          grep -o "Zhiyuan Honor Scholarship\|Recommend[^<]*" _site/cv/index.html | sort -u | head -n 5
+          echo "--- one publication page ---"
+          grep -o "Recommended citation:.*" _site/publication/2025-synlogic/index.html | head -c 400
+          echo ""
+          echo "--- leftover template text check ---"
+          grep -rl "Your Name\|paper-title-number\|Git It\|blog-post" _site --include="*.html" || echo "none found"
