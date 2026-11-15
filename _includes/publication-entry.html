@@ -1,0 +1,6 @@
+<article class="publication-entry">
+  <h3>{{ post.title }}</h3>
+  <p>{{ post.authors | join: ", " | replace: "Junteng Liu", "<strong>Junteng Liu</strong>" }}</p>
+  <p><em>{{ post.venue }}</em>, {{ post.year }}. {{ post.role }}.</p>
+  {% if post.code_repository %}<p>Code repository: {{ post.code_repository }}</p>{% endif %}
+</article>
